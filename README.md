@@ -12,15 +12,23 @@ In angular 2 loading a web worker application is done by splitting the bootstrap
 The 1st phase requires a worker script, the worker script (and imports) is what actually runs in the worker thread.  
 Having a URI as an entry point presents a problem in webpack due to it's architecture, to allow the use of a URI we need to play along and use webpack tools.  
 
+## Install
+```
+npm install angular-worker-loader --save-dev
+```
 
 ## Usage
 
 ``` ts
 // main.ts - This code run's on the UI thread.
+import { ApplicationRef } from '@angular/core';
 import { bootstrapRender } from '@angular/platform-browser';
 
-require('angular-worker!./main.worker')(bootstrapRender /*, providers */);
+const bootstrap: WebpackBootstrapFactory = require('angular-worker!./main.worker')
+let appRefPromise: Promise<ApplicationRef> = bootstrap(bootstrapRender /*, [ customProviders ] */);
 ```
+Require the worker file (the entry point to run in a worker), the return type if a wrapper function around the original angular `bootstrapRender`.  
+Invoke the function, supplying the original `bootstrapRender` and optional providers.
 > Don't forget to load all polyfills.
  
 
