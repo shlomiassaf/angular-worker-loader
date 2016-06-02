@@ -19,6 +19,8 @@ npm install angular-worker-loader --save-dev
 
 ## Usage
 
+> Boilerplate type overhead for demo purposes, see shorter demo below.
+
 ``` ts
 // main.ts - This code run's on the UI thread.
 import { ApplicationRef } from '@angular/core';
@@ -32,8 +34,7 @@ interface WebpackBootstrapFactory {
 const bootstrap: WebpackBootstrapFactory = require('angular-worker!./main.worker')
 let appRefPromise: Promise<ApplicationRef> = bootstrap(bootstrapRender /*, [ customProviders ] */);
 ```
-Require the worker file (the entry point to run in a worker), the return type if a wrapper function around the original angular `bootstrapRender`.  
-Invoke the function, supplying the original `bootstrapRender` and optional providers.
+Require the worker file (the entry point to run in a worker), the return type if a wrapper function around the original angular `bootstrapRender`. Invoke the function, supplying the original `bootstrapRender` and optional providers.
 > Don't forget to load all polyfills.
  
 
