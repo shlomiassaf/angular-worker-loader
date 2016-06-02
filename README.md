@@ -19,10 +19,11 @@ npm install angular-worker-loader --save-dev
 
 ## Usage
 
-> Boilerplate type overhead for demo purposes, see shorter demo below.
+Boilerplate type overhead for demo purposes, see shorter demo below.
 
 ``` ts
 // main.ts - This code run's on the UI thread.
+// Don't forget to load polyfills before.
 import { ApplicationRef } from '@angular/core';
 import { bootstrapRender } from '@angular/platform-browser';
 
@@ -34,9 +35,9 @@ interface WebpackBootstrapFactory {
 const bootstrap: WebpackBootstrapFactory = require('angular-worker!./main.worker')
 let appRefPromise: Promise<ApplicationRef> = bootstrap(bootstrapRender /*, [ customProviders ] */);
 ```
-Require the worker file (the entry point to run in a worker), the return type if a wrapper function around the original angular `bootstrapRender`. Invoke the function, supplying the original `bootstrapRender` and optional providers.
-> Don't forget to load all polyfills.
+Require the worker file (the entry point to run in a worker), the return type is a wrapper function around the original angular `bootstrapRender`. Invoke the function, supplying the original `bootstrapRender` and optional providers.
  
+
 
 ``` ts
 // main.worker.ts - This code run's on the worker thread.
@@ -73,6 +74,33 @@ import { App } from './app';
 
 bootstrapApp(App, [ WORKER_APP_LOCATION_PROVIDERS ]);
 ```
+
+## Compare with a non webpack setup
+
+#### main.ts
+**angular-loader:**
+``` ts
+import { bootstrapRender } from '@angular/platform-browser';
+require('angular-worker!./main.worker')(bootstrapRender);
+```
+**Non webpack:**
+``` ts
+import { bootstrapRender } from '@angular/platform-browser';
+bootstrapRender('main.worker.js');
+```
+
+#### main.worker.ts
+**angular-loader:**
+``` ts
+import { bootstrapApp } from '@angular/platform-browser';
+import { App } from './app';
+bootstrapApp(App, [ /* Application providers */ ]);
+```
+
+**Non webpack:**
+No change!
+
+The only difference is a revised bootstrapRender invocation.
 
 ## Credits 
 Heavily based on [worker-loader](https://github.com/webpack/worker-loader)
