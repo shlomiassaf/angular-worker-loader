@@ -26,7 +26,7 @@ import { bootstrapRender } from '@angular/platform-browser';
 
 // The shape of the returned function.
 interface WebpackBootstrapFactory {
-  (bsRender: (workerScriptUri: string, customProviders?: Array<any>) => Promise<ApplicationRef>
+  (bsRender: typeof bootstrapRender, customProviders?: Array<any>): Promise<ApplicationRef>; 
 }
 
 const bootstrap: WebpackBootstrapFactory = require('angular-worker!./main.worker')
