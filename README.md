@@ -74,6 +74,8 @@ import { App } from './app';
 bootstrapApp(App, [ WORKER_APP_LOCATION_PROVIDERS ]);
 ```
 
+## Credits 
+Heavily based on [worker-loader](https://github.com/webpack/worker-loader)
 ## License
 
 MIT (http://www.opensource.org/licenses/mit-license.php)
